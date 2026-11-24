@@ -1,4 +1,4 @@
-# Birthday card kit
+# Interactive Birthday Card
 
 Free to use, never for sale. See [License](#license).
 
