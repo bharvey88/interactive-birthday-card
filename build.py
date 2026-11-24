@@ -26,6 +26,10 @@ if not re.fullmatch(r"[a-z0-9-]+", CFG["slug"]):
 if not 1 <= CFG["age"] <= 12:
     sys.exit("age has to be 1 to 12 so the candles fit on the cake")
 
+if SECRET and os.environ.get("GITHUB_ACTIONS"):
+    # Hide the link in the public log, since the upload step lists every file
+    print(f"::add-mask::{CFG['slug']}", flush=True)
+
 OUT = os.path.join(ROOT, "dist", CFG["slug"])
 IMG = os.path.join(OUT, "img")
 
