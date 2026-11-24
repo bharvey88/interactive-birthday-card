@@ -396,6 +396,8 @@ $('again').onclick = sing;
 const ENTER = {
   s2() {
     rubDone = false;
+    // A way on if the pictures fail to load and the coloring can't be counted
+    setTimeout(() => { if (scene === 's2' && !rubDone) $('n2').classList.add('show'); }, 25000);
     crayonAt(150, 470);
     if (!calm) crayonGhost = $('crayon').animate([[70, 480], [190, 440], [90, 520], [210, 490], [70, 480]].map(([x, y]) => ({ transform: `translate(${x}px,${y}px) rotate(28deg)` })), { duration: 3200, iterations: Infinity });
   },
