@@ -10,9 +10,22 @@ An interactive birthday card for a little kid that opens from a link in iMessage
 4. Sing along with a bouncing star, then tap the candles out.
 5. Read the message. The unicorn they colored is in the picture.
 
-Play the sample: [a card for Riley](https://bharvey88.github.io/interactive-birthday-card/riley-birthday-card/)
+**[Make a card](https://bharvey88.github.io/interactive-birthday-card/)** or play the sample: [a card for Riley](https://bharvey88.github.io/interactive-birthday-card/riley-birthday-card/)
 
-There are two ways to make one:
+## Make one with the form
+
+Fill in [the form](https://bharvey88.github.io/interactive-birthday-card/), copy the link and text it. There's nothing to install and no account.
+
+- The name and everything else is in the link, after the `#`. Browsers don't send that part to the website, so it isn't stored there. Anyone with the link can see the card.
+- The endings are prewritten, so nobody can put their own message on the page.
+- The link preview in a text says "A birthday card for you", since the website never sees the name.
+- You can also write a link by hand: `https://bharvey88.github.io/interactive-birthday-card/card/#name=Riley&age=6&from=Grandma`
+
+The form and card are the static files in `site`. After changing the art, run `python tools/render_site.py` to redraw its pictures.
+
+## Other ways
+
+For your own message, your own domain or a different look, make your own copy:
 
 - [With only GitHub](#make-one-with-only-github): free, in your browser, nothing to install.
 - [On your computer](#make-one-on-your-computer): for changing the art, or hosting it on Cloudflare or anywhere else.

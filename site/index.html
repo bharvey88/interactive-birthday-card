@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'none'">
+<meta name="theme-color" content="#e2cdf8">
+<title>Make a birthday card</title>
+<meta name="description" content="Make an interactive birthday card for a little kid and text it as a link. Free, with nothing to install.">
+<meta property="og:title" content="Make a birthday card">
+<meta property="og:description" content="Fill in a name and get a link to text.">
+<meta property="og:image" content="{{SITE}}/card/img/preview.jpg">
+<link rel="icon" href="card/img/seal.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="maker.css">
+</head><body>
+<main>
+ <header>
+  <h1>Make a birthday card</h1>
+  <p>Fill this in and get a link to text. The card has a castle to color, a unicorn, a song and candles to blow out. Free, with nothing to install.</p>
+ </header>
+
+ <div class="stage" aria-hidden="true">
+  <div class="env"><img src="card/img/envback.webp" alt=""><img src="card/img/envfront.webp" alt=""><img src="card/img/envflap.webp" alt=""><img src="card/img/seal.webp" alt=""><div id="envname"></div></div>
+  <img id="princess" src="card/img/prin-brown-light.webp" alt="">
+ </div>
+
+ <form id="f" novalidate>
+  <label for="name">First name</label>
+  <input id="name" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false" aria-describedby="name-e">
+  <p class="err" id="name-e"></p>
+
+  <label for="age">Turning</label>
+  <select id="age"></select>
+
+  <label for="from">From</label>
+  <input id="from" maxlength="40" autocomplete="off" autocapitalize="words" aria-describedby="from-e">
+  <p class="err" id="from-e"></p>
+
+  <label for="song">How the song sings the name</label>
+  <input id="song" maxlength="40" autocomplete="off" spellcheck="false" aria-describedby="song-h song-e">
+  <p class="hint" id="song-h">Put a dash between the parts, like Ri-ley.</p>
+  <p class="err" id="song-e"></p>
+
+  <fieldset><legend>Princess hair</legend><div class="row" id="hair"></div></fieldset>
+  <fieldset><legend>Princess skin</legend><div class="row" id="skin"></div></fieldset>
+
+  <label class="check"><input type="checkbox" id="cross"> Add a gold cross to the castle and princess</label>
+
+  <fieldset><legend>Ending</legend><div id="ending"></div></fieldset>
+
+  <button class="go" type="submit">Make the link</button>
+ </form>
+
+ <section id="done" hidden aria-live="polite">
+  <h2>The card is ready</h2>
+  <label for="link">Link to text</label>
+  <input id="link" readonly>
+  <div class="acts">
+   <button class="go" id="copy" type="button">Copy link</button>
+   <button class="go alt" id="share" type="button" hidden>Share</button>
+   <a class="go alt" id="open" target="_blank" rel="noopener">Open the card</a>
+  </div>
+  <p class="hint">Anyone with the link can see the card. The name is in the part after the #, which browsers don't send to this website.</p>
+ </section>
+
+ <footer>
+  <p>Free to use, never for sale. Made by <a href="https://github.com/bharvey88/interactive-birthday-card">bharvey88/interactive-birthday-card</a>, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+ </footer>
+</main>
+<script src="link.js"></script>
+<script src="maker.js"></script>
+</body></html>

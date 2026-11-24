@@ -1,0 +1,105 @@
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#e2cdf8;overscroll-behavior:none;touch-action:none;
+ -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;font-family:'Patrick Hand','Chalkboard SE','Comic Sans MS',cursive}
+body{position:fixed;inset:0;transition:background-color .6s}
+#world{position:absolute;left:0;top:0;width:300px;height:600px;transform-origin:0 0}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s,visibility 0s .6s}
+.scene.on{opacity:1;visibility:visible;transition:opacity .6s}
+.scene img,.scene svg,.scene canvas{position:absolute;-webkit-user-drag:none;pointer-events:none}
+.bg{left:-300px;top:-50px;width:900px;height:700px;max-width:none}
+.paper{position:absolute;background:#fffdf8}
+button{font:inherit;border:0;background:none;padding:0;cursor:pointer;position:absolute;color:inherit}
+button:focus-visible{outline:4px solid #ffb400;outline-offset:3px;border-radius:20px}
+h1,h2,p{margin:0}
+h2{position:absolute;left:0;width:300px;top:24px;text-align:center;font:700 32px 'Cabin Sketch','Patrick Hand',cursive;color:#a0318a}
+.hand{position:absolute;left:0;width:300px;text-align:center;font-size:28px;line-height:1.1;color:#6b2a8c;pointer-events:none}
+.pill{left:18px;width:264px;padding:16px 0;border-radius:20px;background:rgba(255,255,255,.92);color:#a0318a;transition:opacity .4s}
+
+/* envelope */
+#env{position:absolute;left:20px;top:190px;width:260px;height:220px;perspective:900px;transition:transform 1s ease,opacity .5s}
+#env img{left:0;top:0;width:260px;height:220px}
+#flap{z-index:4;transform-origin:50% 10px;transition:transform .8s ease-in-out}
+#seal{z-index:5;transform-origin:50% 116px;transition:transform .35s,opacity .35s}
+#letter{position:absolute;z-index:1;left:65px;top:22px;width:130px;height:180px;overflow:hidden;background:#fffdf8;border:3px solid #5a2f83;border-radius:6px;transition:transform 1s cubic-bezier(.3,1.2,.5,1)}
+#letter img{left:-116px;top:-32px;width:360px;height:280px;max-width:none}
+#open{left:20px;top:190px;width:260px;height:220px;z-index:9}
+@keyframes thump{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+#s1.on #seal{animation:thump 1.3s ease-in-out infinite}
+#env.o1 #seal{animation:none!important;transform:scale(2);opacity:0}
+#env.o2 #flap{transform:rotateX(180deg)}
+#env.o3 #flap{z-index:0}
+#env.o4 #letter{transform:translateY(-165px)}
+#env.o5 #letter{z-index:8;transform:translateY(-10px) scale(2.5)}
+#s1.opening .hand{opacity:0;transition:opacity .3s}
+
+#envname{position:absolute;z-index:3;left:48px;width:164px;bottom:16px;text-align:center;white-space:nowrap;font:700 44px/1.1 'Cabin Sketch','Patrick Hand',cursive;color:#5a1f7a}
+
+/* coloring page */
+#uni{left:-4px;top:394px;width:188px;height:178px;transform-origin:50% 100%}
+#prin{left:164px;top:384px;width:126px;height:184px;transform-origin:50% 100%}
+#page{left:-300px;top:-50px;width:900px;height:700px;transition:opacity 1.2s}
+#s2 #page{pointer-events:none}
+#crayon{left:0;top:0;transform-origin:12px 4px;transition:opacity .3s}
+#title{position:absolute;left:0;top:26px;width:300px;text-align:center;font:700 36px/1 'Cabin Sketch',cursive;opacity:0;transform:scale(.6);transition:opacity .4s,transform .6s cubic-bezier(.3,1.8,.5,1);pointer-events:none}
+#title span{display:block;color:#8d46d1;font-size:32px;white-space:nowrap}
+#title b{display:block;font-size:66px;color:#d93a8a}
+#s2.done #title{opacity:1;transform:none}
+#s2.done #rubhint,#s2.done #crayon{opacity:0}
+#s2.done #page{opacity:0}
+@keyframes hop{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-16px) rotate(4deg)}}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+#s2.done #uni{animation:hop .9s ease-in-out infinite}
+#s2.done #prin{animation:sway .9s ease-in-out infinite}
+
+
+.next{left:75px;top:388px;width:150px;height:54px;border-radius:27px;background:#d93a8a;border:4px solid #fff;box-shadow:0 3px 0 #8a1f5c;color:#fff;font-size:28px;line-height:1;transform:scale(0);visibility:hidden;transition:transform .4s cubic-bezier(.3,1.8,.5,1)}
+#n2{top:40px}
+.next.show{transform:none;visibility:visible}
+
+/* paint */
+.k *{stroke-linejoin:round;stroke-linecap:round}
+#paint{left:0;top:104px}
+#s3 #paint [data-p]{pointer-events:auto;cursor:pointer}
+#crayons{left:0;top:460px;overflow:visible}
+#s3 #crayons g{pointer-events:auto;cursor:pointer;transition:transform .2s}
+
+/* cake */
+#lyric{position:absolute;left:0;top:100px;width:300px;text-align:center;font-size:36px;line-height:1.5;color:#7b3fb5;white-space:nowrap}
+#lyric span{display:inline-block;transition:color .15s}
+#lyric span.on{color:#d93a8a}
+#bstar{left:-12px;top:-12px;opacity:0}
+#candles{left:0;top:200px;overflow:visible}
+@keyframes flick{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.12,1.18) rotate(4deg)}}
+.fl{transform-box:fill-box;transform-origin:50% 100%;animation:flick .5s ease-in-out infinite;transition:opacity .25s}
+.out .fl{opacity:0;animation:none}
+@keyframes smoke{0%{opacity:.8;transform:translateY(0)}100%{opacity:0;transform:translateY(-34px)}}
+.smoke{opacity:0}
+.out .smoke{animation:smoke 1.3s ease-out forwards}
+#blow{opacity:0;transition:opacity .4s}
+#s4.ready #blow{opacity:1}
+#again{right:10px;top:172px;width:46px;height:46px;border-radius:50%;background:#a15fe0;color:#fff;font-size:28px;line-height:46px;opacity:0;visibility:hidden;transition:opacity .4s}
+#s4.ready #again{opacity:1;visibility:visible}
+
+/* message */
+#msg{position:absolute;left:14px;top:12px;width:272px;padding:14px 4px 12px;border-radius:18px;background:rgba(255,255,255,.97);border:3px solid #d9a9d0;text-align:center;font-size:24px;line-height:29px;color:#4b2a6b;white-space:nowrap}
+#msg h2{position:static;width:auto;font-size:28px;line-height:32px;margin-bottom:2px}
+#msg .sig{font-size:27px;margin-top:5px;color:#a0318a}
+#msg>*{opacity:0;transition:opacity .7s}
+#msg>.in{opacity:1}
+#myuni{position:absolute;left:-2px;top:398px;width:180px;height:172px;transform-origin:50% 100%;pointer-events:none}
+#prin2{left:164px;top:384px;width:126px;height:184px;transform-origin:50% 100%}
+#s5.on #myuni{animation:hop 1.1s ease-in-out infinite}
+#s5.on #prin2{animation:sway 1.1s ease-in-out infinite}
+#replay{left:95px;top:566px;width:110px;height:32px;border-radius:16px;background:rgba(255,255,255,.9);color:#6b2a8c;font-size:19px}
+
+@media (prefers-reduced-motion:reduce){
+ #s2.done #uni,#s2.done #prin,#s5.on #myuni,#s5.on #prin2,#s1.on #seal,.fl{animation:none}
+}
+
+[hidden]{display:none!important}
+#title b{white-space:nowrap}
+#rubhint{white-space:nowrap}
+#oops{position:fixed;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-size:26px;line-height:1.3;color:#5a1f7a}
+#oops p{max-width:22em}
+#oops a{color:#a0318a}

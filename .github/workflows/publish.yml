@@ -52,6 +52,16 @@ jobs:
           CARD_CONFIG: ${{ secrets.CARD_CONFIG }}
           SITE_URL: ${{ steps.pages.outputs.base_url }}
         run: python build.py
+      - name: Add the form
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          if [ -e dist/card ]; then
+            echo "::notice::The form was left out because your card's slug is card."
+            exit 0
+          fi
+          cp -r site/. dist/
+          sed -i "s#{{SITE}}#$SITE_URL#g" dist/index.html dist/card/index.html
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

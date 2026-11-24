@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'none'">
+<meta name="theme-color" content="#e2cdf8">
+<title>A birthday card for you</title>
+<meta property="og:title" content="A birthday card for you">
+<meta property="og:description" content="Tap to open it!">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{SITE}}/card/img/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/seal.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+</head><body>
+<div id="world">
+
+ <section class="scene on" id="s1" aria-label="Envelope">
+  <img class="bg" src="img/envbg.webp" alt="">
+  <div id="env">
+   <img src="img/envback.webp" alt="" style="z-index:0">
+   <div id="letter"><img data-img="lines" alt=""></div>
+   <img src="img/envfront.webp" alt="" style="z-index:3">
+   <div id="envname"></div>
+   <img id="flap" src="img/envflap.webp" alt="">
+   <img id="seal" src="img/seal.webp" alt="">
+  </div>
+  <button id="open" aria-label="Open the envelope"></button>
+  <p class="hand" style="top:430px">Tap the heart to open</p>
+ </section>
+
+ <section class="scene" id="s2" aria-label="Coloring page">
+  <img class="bg" data-img="scene" alt="">
+  <img id="uni" src="img/uni.webp" alt="A unicorn">
+  <img id="prin" data-img="prin" alt="A princess in front of a castle">
+  <canvas id="page"></canvas>
+  <p class="hand pill" id="rubhint" style="top:40px"></p>
+  <svg id="crayon" width="26" height="90" viewBox="-3 -20 26 90"><path d="M0 0L9-16L18 0V62H0Z" fill="#e8509c" stroke="#7a1f55" stroke-width="2" stroke-linejoin="round"/><path d="M0 12H18M0 52H18" stroke="#7a1f55" stroke-width="3"/></svg>
+  <button class="next" id="n2">I'm done!</button>
+  <h1 id="title"><span id="nth"></span><b id="who"></b></h1>
+ </section>
+
+ <section class="scene" id="s3" aria-label="Color the unicorn">
+  <div class="bg paper"></div>
+  <h2>Color the unicorn</h2>
+  <svg id="paint" viewBox="0 0 300 300" width="300" height="300"></svg>
+  <svg id="crayons" viewBox="0 0 300 150" width="300" height="150"></svg>
+  <button class="next" id="n3">I'm done!</button>
+ </section>
+
+ <section class="scene" id="s4" aria-label="Birthday cake">
+  <img class="bg" src="img/cakebg.webp" alt="Birthday cake">
+  <h2>Sing with us!</h2>
+  <div id="lyric" aria-live="off"></div>
+  <svg id="bstar" width="24" height="24" viewBox="-16 -16 32 32"></svg>
+  <svg id="candles" viewBox="0 0 300 160" width="300" height="160"></svg>
+  <p class="hand" id="blow" style="top:538px">Tap the candles out</p>
+  <button id="again" aria-label="Sing it again">♪</button>
+ </section>
+
+ <section class="scene" id="s5" aria-label="Message">
+  <img class="bg" data-img="end" alt="">
+  <div id="myuni"></div>
+  <img id="prin2" data-img="prin" alt="A princess">
+  <div id="msg"></div>
+  <button id="replay">Play again</button>
+ </section>
+
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="oops" hidden><p>This card's link is missing something. Ask for the link again, or <a href="../">make a new card</a>.</p></div>
+<script src="../link.js"></script>
+<script src="boot.js"></script>
+</body></html>
