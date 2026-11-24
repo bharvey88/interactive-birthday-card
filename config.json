@@ -1,0 +1,19 @@
+{
+  "name": "Riley",
+  "syllables": ["Ri", "ley"],
+  "age": 6,
+  "from": "Grandma",
+  "cross": false,
+  "hair": "#8a5a36",
+  "skin": "#f6cba9",
+  "message": [
+    "Once upon a time",
+    "a kid named Riley had",
+    "a birthday with a unicorn,",
+    "a princess and a castle.",
+    "And everybody loved Riley",
+    "very, very much."
+  ],
+  "slug": "riley-birthday-card",
+  "siteUrl": "https://cards.example.com"
+}

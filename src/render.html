@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@700&family=Patrick+Hand&display=block" rel="stylesheet">
+<style>
+html,body{margin:0;background:transparent;overflow:hidden}
+#o svg{display:block}
+.k *{stroke-linejoin:round;stroke-linecap:round}
+.k .s{stroke:var(--line);stroke-width:var(--lw)}
+.page{--body:#fff;--shade:#fff;--muzz:#fff;--m1:#fff;--m2:#fff;--m3:#fff;--horn:#fff;--hoof:#fff;--wall:#fff;--wall2:#fff;--roof:#fff;--roof2:#fff;--door:#fff;--win:#fff;--dress:#fff;--dress2:#fff;--skin:#fff;--hair:#fff;--gold:#fff;--cheek:#fff;--line:#4b3a5c;--ink:#4b3a5c;--lw:3}
+.crayon{--body:#fdf7ff;--shade:#eadcf3;--muzz:#ffd3e4;--m1:#ff6fb1;--m2:#a15fe0;--m3:#ffb3d6;--horn:#ffc93c;--hoof:#a15fe0;--wall:#ffcfe4;--wall2:#f9b5d6;--roof:#9a55db;--roof2:#e8509c;--door:#8b5a3c;--win:#fff0a8;--dress:#ff77b7;--dress2:#b978ee;--skin:#f6cba9;--hair:#8a5a36;--gold:#ffc93c;--cheek:#ff9fbf;--line:#5a2f83;--ink:#3d1f5c;--lw:3.4}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<filter id="crayon" filterUnits="userSpaceOnUse" x="-310" y="-60" width="920" height="720">
+ <feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="4" result="w"/>
+ <feDisplacementMap in="SourceGraphic" in2="w" scale="4" xChannelSelector="R" yChannelSelector="G" result="d"/>
+ <feTurbulence type="fractalNoise" baseFrequency=".55 .16" numOctaves="3" seed="9" result="g"/>
+ <feColorMatrix in="g" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -4.2 0 0 0 3.5" result="m"/>
+ <feComposite in="d" in2="m" operator="in"/></filter>
+<filter id="wob" filterUnits="userSpaceOnUse" x="-310" y="-60" width="920" height="720">
+ <feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="4" result="w"/>
+ <feDisplacementMap in="SourceGraphic" in2="w" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="fleck" filterUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+ <feTurbulence type="fractalNoise" baseFrequency=".55 .16" numOctaves="3" seed="9" stitchTiles="stitch" result="g"/>
+ <feColorMatrix in="g" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 4.2 0 0 0 -2.5"/></filter>
+</defs></svg>
+<div id="o"></div>
+<script src="art.js"></script>
+<script>
+(async () => {
+const CFG = await (await fetch('/config.json')).json();
+const BOTH = CFG.cross ? { necklace: 1 } : { cross: false };
+const PAPER = '<rect x="-310" y="-60" width="920" height="720" fill="#fffdf8"/>';
+const wideHills = (a, b) => `<path fill="${a}" d="M-320 425Q-160 395-10 440Q80 400 160 430T310 415Q450 385 620 425V680H-320Z"/><path fill="${b}" d="M-320 520Q-150 480-10 520Q90 480 170 510T310 500Q460 480 620 515V680H-320Z"/>`;
+const bow = RB.map((c, i) => { const r = 158 - i * 13; return `<path fill="none" stroke="${c}" stroke-width="14" d="M${150 - r} 470V400A${r} ${r} 0 0 1 ${150 + r} 400V470"/>`; }).join('');
+const bowLines = [158, 132, 106].map(r => `<path d="M${150 - r} 470V400A${r} ${r} 0 0 1 ${150 + r} 400V470"/>`).join('');
+const petals = [-260, -190, -120, -60, 24, 70, 140, 196, 262, 340, 410, 480, 560].map((x, i) => `<g transform="translate(${x} ${580 + (i * 7) % 16})" fill="${i % 2 ? '#a15fe0' : '#ff6fb1'}"><circle cx="-5" r="4.5"/><circle cx="5" r="4.5"/><circle cy="-5" r="4.5"/><circle cy="5" r="4.5"/><circle r="3.5" fill="#ffd84d"/></g>`).join('');
+const scenery = `<g filter="url(#crayon)">${bow}${wideHills('#d9f0c4', '#bfe3a4')}${petals}</g>`;
+const world = inner => `<svg width="900" height="700" viewBox="-300 -50 900 700">${inner}</svg>`;
+const bgHearts = [[-250, 60], [-170, 220], [-230, 420], [-90, 120], [-80, 520], [40, 80], [250, 70], [60, 500], [240, 480], [150, 24], [150, 570], [380, 130], [370, 520], [470, 260], [540, 70], [530, 450]].map(([x, y], i) => i % 2 ? star(x, y, 14, '#ffc93c') : heart(x, y, 1.4, '#ff6fb1')).join('');
+
+const envBack = '<path d="M0 0H240V200H0Z" fill="#ef7fb6" stroke="#5a2f83" stroke-width="4" stroke-linejoin="round"/>';
+const envFront = '<path d="M0 0L120 104L240 0V200H0Z" fill="#ff9fcb" stroke="#5a2f83" stroke-width="4" stroke-linejoin="round"/><path d="M0 200L100 96M240 200L140 96" stroke="#5a2f83" stroke-width="4"/>';
+const envFlap = '<path d="M0 0L120 112L240 0Z" fill="#ffc4e0" stroke="#5a2f83" stroke-width="4" stroke-linejoin="round"/>';
+const envName = T(120, 180, Math.min(44, 264 / CFG.name.length), CFG.name, CS, '#5a1f7a');
+const env = inner => `<svg width="260" height="220" viewBox="-10 -10 260 220">${inner}</svg>`;
+const seal = `<circle cx="120" cy="106" r="32" fill="#9a55db" stroke="#5a2f83" stroke-width="4"/>${heart(120, 96, 1.45, '#ffd3e4')}`;
+
+const cakeArt = `<rect x="-310" y="-60" width="920" height="720" fill="#ffe3f1"/><path d="M50 400H250V500H50Z" fill="#ffc4e0" stroke="#5a2f83" stroke-width="4"/><path d="M80 320H220V400H80Z" fill="#e2c1fa" stroke="#5a2f83" stroke-width="4"/><path d="M50 400Q66 436 84 408Q100 440 117 408Q134 440 150 408Q168 440 184 408Q202 440 217 408Q234 436 250 400Z" fill="#fff" stroke="#5a2f83" stroke-width="3"/><path d="M80 320Q96 348 112 324Q130 350 150 324Q170 350 188 324Q204 348 220 320Z" fill="#ff8ac0" stroke="#5a2f83" stroke-width="3"/><ellipse cx="150" cy="506" rx="130" ry="16" fill="#b978ee" stroke="#5a2f83" stroke-width="4"/>${[...Array(6)].map((_, i) => heart(70 + i * 32, 456, .7, i % 2 ? '#a15fe0' : '#e8509c')).join('')}`;
+
+const LAYERS = {
+  scenebg: world(PAPER + scenery + `<g class="crayon" filter="url(#crayon)">${at(20, 150, .87, castle(BOTH))}</g>`),
+  endbg: world(PAPER + scenery + `<g class="crayon" filter="url(#crayon)">${at(48, 298, .68, castle(BOTH))}</g>`),
+  uni: world(`<g class="crayon" filter="url(#crayon)">${at(4, 400, .72, unicorn())}</g>`),
+  prin: world(`<g class="crayon" filter="url(#crayon)">${at(168, 390, .72, princess(BOTH))}</g>`),
+  lines: world(`<g class="page">${PAPER}<g filter="url(#wob)" fill="none" stroke="#4b3a5c" stroke-width="2.5">${bowLines}<path fill="#fffdf8" d="M-320 425Q-160 395-10 440Q80 400 160 430T310 415Q450 385 620 425V680H-320Z"/></g><g filter="url(#wob)">${cast(BOTH)}</g></g>`),
+  envbg: world(`${PAPER}<g filter="url(#crayon)"><rect x="-310" y="-60" width="920" height="720" fill="#e2cdf8"/>${bgHearts}</g>`),
+  cakebg: world(`${PAPER}<g filter="url(#crayon)">${cakeArt}</g>`),
+  envback: env(`<g filter="url(#crayon)">${envBack}</g>`),
+  envfront: env(`<g filter="url(#wob)">${envFront}</g>${envName}`),
+  envflap: env(`<g filter="url(#wob)">${envFlap}</g>`),
+  seal: env(`<g filter="url(#wob)">${seal}</g>`),
+  fleck: '<svg width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" filter="url(#fleck)"/></svg>',
+  og: `<svg width="1200" height="630" viewBox="-125 0 630 330.75"><rect x="-200" y="-50" width="900" height="500" fill="#fffdf8"/><g filter="url(#crayon)"><rect x="-200" y="-50" width="900" height="500" fill="#e2cdf8"/>${[[-80, 60], [-40, 230], [-90, 150], [420, 50], [460, 170], [400, 250]].map(([x, y], i) => i % 2 ? star(x, y, 18, '#ffc93c') : heart(x, y, 1.9, '#ff6fb1')).join('')}</g><g transform="translate(22 25) scale(1.4)"><g filter="url(#wob)">${envBack}${envFront}${envFlap}${seal}</g>${envName}</g></svg>`
+};
+const look = document.createElement('style');
+look.textContent = `.crayon{--hair:${CFG.hair};--skin:${CFG.skin}}`;
+document.head.append(look);
+document.getElementById('o').innerHTML = LAYERS[new URLSearchParams(location.search).get('l')];
+})();
+</script></body></html>

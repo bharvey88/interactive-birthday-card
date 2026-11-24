@@ -1,0 +1,8 @@
+{
+  "name": "birthday-cards",
+  "compatibility_date": "2026-04-18",
+  "workers_dev": true,
+  // For your own domain, uncomment this and set "workers_dev" to false
+  // "routes": [{ "pattern": "cards.example.com", "custom_domain": true }],
+  "assets": { "directory": "./dist", "not_found_handling": "none" }
+}
