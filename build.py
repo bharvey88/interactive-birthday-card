@@ -14,11 +14,17 @@ import threading
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-CFG = json.load(open(os.path.join(ROOT, "config.json"), encoding="utf-8"))
+# A CARD_CONFIG secret on GitHub replaces config.json, so the child's name stays out of a public repo
+SECRET = os.environ.get("CARD_CONFIG", "").strip()
+try:
+    CFG = json.loads(SECRET or open(os.path.join(ROOT, "config.json"), encoding="utf-8").read())
+except json.JSONDecodeError as e:
+    sys.exit(f"{'The CARD_CONFIG secret' if SECRET else 'config.json'} isn't valid JSON: line {e.lineno}, column {e.colno}")
+CFG["siteUrl"] = os.environ.get("SITE_URL") or CFG["siteUrl"]
 if not re.fullmatch(r"[a-z0-9-]+", CFG["slug"]):
-    sys.exit("config.json: slug can only use lowercase letters, numbers and dashes")
+    sys.exit("slug can only use lowercase letters, numbers and dashes")
 if not 1 <= CFG["age"] <= 12:
-    sys.exit("config.json: age has to be 1 to 12 so the candles fit on the cake")
+    sys.exit("age has to be 1 to 12 so the candles fit on the cake")
 
 OUT = os.path.join(ROOT, "dist", CFG["slug"])
 IMG = os.path.join(OUT, "img")
@@ -60,10 +66,15 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
-    def translate_path(self, path):
-        if path.split("?")[0] == "/config.json":
-            return os.path.join(ROOT, "config.json")
-        return super().translate_path(path)
+    def do_GET(self):
+        if self.path != "/config.json":
+            return super().do_GET()
+        body = json.dumps(CFG).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
 
 
 def draw():
@@ -127,4 +138,4 @@ os.makedirs(IMG, exist_ok=True)
 if "--no-art" not in sys.argv:
     draw()
 fill()
-print("built", os.path.join("dist", CFG["slug"]))
+print("built the card" if SECRET else "built " + os.path.join("dist", CFG["slug"]))

@@ -1,0 +1,62 @@
+name: Publish card
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.pages.outputs.ready }}
+    steps:
+      - id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if type=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type 2> err.txt); then
+            if [ "$type" = workflow ]; then
+              echo "ready=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          elif ! grep -q "HTTP 404" err.txt; then
+            cat err.txt
+            exit 1
+          fi
+          echo "::notice::Nothing was published. Go to Settings, Pages and set Source to GitHub Actions, then run this again."
+
+  publish:
+    needs: check
+    if: needs.check.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - id: pages
+        uses: actions/configure-pages@v6
+      - name: Build the card
+        env:
+          CARD_CONFIG: ${{ secrets.CARD_CONFIG }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: python build.py
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+      - id: deploy
+        uses: actions/deploy-pages@v5

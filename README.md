@@ -10,18 +10,45 @@ An interactive birthday card for a little kid that opens from a link in iMessage
 4. Sing along with a bouncing star, then tap the candles out.
 5. Read the message. The unicorn they colored is in the picture.
 
-To try the finished sample, run `python -m http.server 8790 --bind 127.0.0.1 -d sample` and open `http://localhost:8790/`.
+Play the sample: [a card for Riley](https://bharvey88.github.io/interactive-birthday-card/riley-birthday-card/)
 
-## Make one
+There are two ways to make one:
 
-You need Python 3 with Pillow, Google Chrome (it draws the art), and Node for the deploy.
+- [With only GitHub](#make-one-with-only-github): free, in your browser, nothing to install.
+- [On your computer](#make-one-on-your-computer): for changing the art, or hosting it on Cloudflare or anywhere else.
 
-1. Edit `config.json`.
-2. Run `pip install -r requirements.txt`
-3. Run `python build.py`
-4. Run `python -m http.server 8790 --bind 127.0.0.1 -d dist` and open `http://localhost:8790/<your slug>/`
+## Make one with only GitHub
 
-If you only changed the message, age or syllables, `python build.py --no-art` skips the drawing step. It takes a few seconds.
+GitHub builds the card and hosts it for free with GitHub Pages. You need a GitHub account.
+
+1. Click **Use this template** at the top of this page, then **Create a new repository**. Name it, choose **Public**, and create it. The name shows up in the link.
+2. In your new repository, go to **Settings**, then **Pages**. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Go to **Settings**, then **Secrets and variables**, then **Actions**. Click **New repository secret** and name it `CARD_CONFIG`.
+4. Copy everything in [config.json](config.json), paste it as the secret, change it to your [settings](#settings), and save. You can skip `siteUrl`, GitHub fills that in.
+5. Go to the **Actions** tab, click **Publish card**, then **Run workflow**. It takes a couple of minutes.
+
+Your card is at `https://USERNAME.github.io/REPOSITORY/SLUG/`. Text yourself that link first to try it.
+
+To change the card later, update the secret and run the workflow again. GitHub won't show you a saved secret, so keep a copy of yours. Each repository holds one card, so make another repository for the next one.
+
+### Keep the name private
+
+A public repository can be read by anyone, so the steps above use a secret instead of editing `config.json`. The card itself is still public to anyone with the link. GitHub also keeps the built card in the Actions tab for a day, where someone looking at your repository may be able to download it. Use a first name only.
+
+If you have GitHub Pro, you can use a private repository instead. The card's link still works for everyone.
+
+### Use your own domain
+
+This works with a subdomain you own, like `cards.example.com`.
+
+1. Where you manage your domain's DNS, add a `CNAME` record for `cards` that points to `USERNAME.github.io`. Leave the repository name off. On Cloudflare, set it to **DNS only**.
+2. In your repository, go to **Settings**, then **Pages**. Type `cards.example.com` under **Custom domain** and click **Save**.
+3. Once the DNS check passes, turn on **Enforce HTTPS**. The certificate can take a while.
+4. Run the **Publish card** workflow again so the link preview uses the new address.
+
+Your card is now at `https://cards.example.com/SLUG/`.
+
+## Settings
 
 | Setting | What it does |
 |---|---|
@@ -32,12 +59,23 @@ If you only changed the message, age or syllables, `python build.py --no-art` sk
 | `cross` | `true` adds a gold cross to the castle and the princess's necklace |
 | `hair`, `skin` | Colors for the princess |
 | `message` | The ending, one entry per line. Keep it to 7 lines of about 28 characters |
-| `slug` | The last part of the link |
+| `slug` | The last part of the link. Lowercase letters, numbers and dashes |
 | `siteUrl` | Where it's hosted. The preview picture needs the full address |
 
-## Put it online
+## Make one on your computer
 
-It's all static files, so any web host works. Ours is a Cloudflare Worker that only serves files.
+You need Python 3 and Google Chrome, which draws the art.
+
+1. Edit `config.json`.
+2. Run `pip install -r requirements.txt`
+3. Run `python build.py`
+4. Run `python -m http.server 8790 --bind 127.0.0.1 -d dist` and open `http://localhost:8790/<your slug>/`
+
+If you only changed the message, age or syllables, `python build.py --no-art` skips the drawing step. It takes a few seconds.
+
+### Host it on Cloudflare
+
+The card is all static files, so any web host works. For a Cloudflare Worker that only serves files, you need Node.
 
 1. Run `npx wrangler login`
 2. For your own domain, edit the `routes` line in `wrangler.jsonc`. The domain has to be on your Cloudflare account. Without it you get a `workers.dev` address.
