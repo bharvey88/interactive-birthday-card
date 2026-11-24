@@ -35,13 +35,10 @@ jobs:
           fi
           echo "::notice::Nothing was published. Go to Settings, Pages and set Source to GitHub Actions, then run this again."
 
-  publish:
+  build:
     needs: check
     if: needs.check.outputs.ready == 'true'
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -58,5 +55,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v5
