@@ -12,14 +12,24 @@ An interactive birthday card for a little kid that opens from a link in iMessage
 
 Play the sample: [a card for Riley](https://bharvey88.github.io/interactive-birthday-card/riley-birthday-card/)
 
-There are two ways to make your own copy, with your own message and domain:
+## Pick one: GitHub or Cloudflare
 
-- [With only GitHub](#make-one-with-only-github): free, in your browser, nothing to install.
-- [On your computer](#make-one-on-your-computer): for changing the art, or hosting it on Cloudflare or anywhere else.
+Both are free, and both give you the same card with your own message. The difference is where the card is hosted.
 
-If you only want to send a card, there's also [a form](#quick-way-the-form) that makes a link. It has prewritten endings.
+| | [GitHub](#option-1-github) | [Cloudflare](#option-2-cloudflare) |
+|---|---|---|
+| Best for | Most people | Advanced users |
+| You need | A GitHub account | A Cloudflare account, Python, Chrome and Node |
+| Where you do it | In your browser | On your computer, in a terminal |
+| Your link | `USERNAME.github.io/REPOSITORY/SLUG` | `birthday-cards.SUBDOMAIN.workers.dev/SLUG` |
+| Your own domain | Yes | Yes, if the domain is on Cloudflare |
+| Cards | One per repository | As many as you want |
 
-## Make one with only GitHub
+The pages tell search engines to stay away, but anyone with the link can open the card. Use a first name only, and a harder to guess `slug` if that matters to you.
+
+Don't need your own message? There's also [a form](#quick-way-the-form) that makes a link for you, with prewritten endings.
+
+## Option 1: GitHub
 
 GitHub builds the card and hosts it for free with GitHub Pages. You need a GitHub account.
 
@@ -50,6 +60,40 @@ This works with a subdomain you own, like `cards.example.com`.
 
 Your card is now at `https://cards.example.com/SLUG/`.
 
+## Option 2: Cloudflare
+
+You build the card on your computer, then upload it to a Cloudflare Worker that only serves files. Build it first.
+
+<details>
+<summary><b>Build the card on your computer</b></summary>
+
+<br>
+
+You need Python 3 and Google Chrome, which draws the art.
+
+1. Download this repository and open a terminal in its folder.
+2. Edit `config.json` with your [settings](#settings).
+3. Run `pip install -r requirements.txt`
+4. Run `python build.py`
+5. Run `python -m http.server 8790 --bind 127.0.0.1 -d dist` and open `http://localhost:8790/SLUG/`
+
+If you only changed the message, age or syllables, `python build.py --no-art` skips the drawing step. It takes a few seconds.
+
+The finished card is the `dist` folder. It's all static files, so any other web host works too.
+
+</details>
+
+Then put it on Cloudflare. You need Node.
+
+1. Run `npx wrangler login`
+2. To use your own domain, edit the `routes` and `workers_dev` lines in `wrangler.jsonc`. The domain has to be on your Cloudflare account. Skip this for a free `workers.dev` address.
+3. Run `npx wrangler deploy`. It prints your address.
+4. Set `siteUrl` in `config.json` to that address, then run `python build.py` and `npx wrangler deploy` again. The link preview needs the full address.
+
+Your card is at that address, plus `/SLUG/`. Text yourself that link first to try it.
+
+A deploy replaces the whole site with what's in `dist`, so keep older cards' folders in there.
+
 ## Settings
 
 | Setting | What it does |
@@ -63,30 +107,6 @@ Your card is now at `https://cards.example.com/SLUG/`.
 | `message` | The ending, one entry per line. Keep it to 7 lines of about 28 characters |
 | `slug` | The last part of the link. Lowercase letters, numbers and dashes |
 | `siteUrl` | Where it's hosted. The preview picture needs the full address |
-
-## Make one on your computer
-
-You need Python 3 and Google Chrome, which draws the art.
-
-1. Edit `config.json`.
-2. Run `pip install -r requirements.txt`
-3. Run `python build.py`
-4. Run `python -m http.server 8790 --bind 127.0.0.1 -d dist` and open `http://localhost:8790/<your slug>/`
-
-If you only changed the message, age or syllables, `python build.py --no-art` skips the drawing step. It takes a few seconds.
-
-### Host it on Cloudflare
-
-The card is all static files, so any web host works. For a Cloudflare Worker that only serves files, you need Node.
-
-1. Run `npx wrangler login`
-2. For your own domain, edit the `routes` line in `wrangler.jsonc`. The domain has to be on your Cloudflare account. Without it you get a `workers.dev` address.
-3. Set `siteUrl` in `config.json` to that address and run `python build.py` again.
-4. Run `npx wrangler deploy`
-
-A deploy replaces the whole site with what's in `dist`, so keep older cards' folders in there.
-
-The pages tell search engines to stay away, but anyone with the link can open it. Use a first name only, and a harder to guess slug if that matters to you.
 
 ## Quick way: the form
 
