@@ -19,10 +19,10 @@ Both are free, and both give you the same card with your own message. The differ
 | | [GitHub](#option-1-github) | [Cloudflare](#option-2-cloudflare) |
 |---|---|---|
 | Best for | Most people | Advanced users |
-| You need | A GitHub account | A Cloudflare account, Python, Chrome and Node |
-| Where you do it | In your browser | On your computer, in a terminal |
-| Your link | `USERNAME.github.io/REPOSITORY/SLUG` | `birthday-cards.SUBDOMAIN.workers.dev/SLUG` |
-| Your own domain | Yes | Yes, if the domain is on Cloudflare |
+| You need | A GitHub account | A Cloudflare account, plus Python, Chrome and Node |
+| Done in | Your browser | A terminal |
+| Free address | On `github.io` | On `workers.dev` |
+| Own domain | Yes | Yes, if it's on Cloudflare |
 | Cards | One per repository | As many as you want |
 
 The pages tell search engines to stay away, but anyone with the link can open the card. Use a first name only, and a harder to guess `slug` if that matters to you.
